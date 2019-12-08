@@ -1,0 +1,154 @@
+// stylelint-disable no-eol-whitespace
+
+/* doc
+---
+title: width
+name: width
+category: width
+---
+## width
+
+Width class: `.w\*`, e.g. `w50`
+Max and min widths: `.maxw*` and `.minw*`
+The value is referenced by pixel value but converted to rem in the css.
+Special classes for %, `.w100p` and auto, e.g. `.wauto`.
+
+<div class="h80 w160 w300-tb w600-dk bg-gainsboro mb3">.w160 .w300-tb .w600-dk</div>
+
+*/
+
+// stylelint-enable
+@import './breakpoints.scss';
+
+/* Widths */
+
+$widths: (0: 0, //   10: 0.625rem,
+    //   13: 0.813rem,
+    14: 0.875rem, //   16: 1rem,
+    //   18: 1.125rem,
+    20: 1.25rem, //   22: 1.375rem,
+    24: 1.5rem, //   26: 1.625rem,
+    28: 1.75rem, //   30: 1.875rem,
+    32: 2rem,
+    35: 2.1875rem,
+    //   36: 2.25rem,
+    //   38: 2.375rem,
+    40: 2.5rem, //   43: 2.688rem,
+    //   48: 3rem,
+    //   50: 3.125rem,
+    60: 3.75rem,
+    70: 4.375rem,
+    80: 5rem,
+    53: 3.312rem,
+    75: 4.6875rem,
+    //   80: 5rem,
+    //   90: 5.625rem,
+    //   92: 5.8rem,
+    //   100: 6.25rem,
+    //   104: 6.45rem,
+    110: 6.875rem,
+    120: 7.5rem,
+    //   130: 8.125rem,
+    140: 8.75rem,
+    160: 10rem,
+    165:10.3125rem,
+    175: 10.938rem,
+    180: 11.25rem,
+    200: 12.5rem,
+    220: 13.75rem,
+    //   225: 14.063rem,
+    //   240: 15rem,
+    250: 15.63rem,
+    //   273: 16.88rem,
+    //   280: 17.5rem,
+    //   300: 18.75rem,
+    //   350: 21.875rem,
+    //   388: 24.25rem,
+    400: 25rem, //   500: 31.25rem,
+    570: 35.62rem,
+    600: 37.5rem,
+    //   700: 43.75rem,
+    //   728: 45.5rem,
+    //   800: 50rem,
+    auto: auto,
+    inherit: inherit,
+    '10p': 10%,
+    '15p': 15%,
+    '20p': 20%,
+    '25p': 25%,
+    '28p': 28%,
+    '30p': 30%,
+    '32p': 32%,
+    '33p': 33.33%,
+    '35p': 35%,
+    '37p': 37%,
+    '44p': 44%,
+    '46p': 46%,
+    '48p': 48%,
+    '49p': 49%,
+    '50p': 50%,
+    '60p': 60%,
+    '66p': 66.66%,
+    '65p': 65%,
+    '70p': 70%,
+    '75p': 75%,
+    '55p': 55%,
+    '80p': 80%,
+    '90p': 90%,
+    '100p': 100%
+    );
+
+@each $name,
+$val in $widths {
+    .w#{$name} {
+        width: #{$val} !important;
+    }
+
+    .minw#{$name} {
+        min-width: #{$val};
+    }
+
+    .maxw#{$name} {
+        max-width: #{$val};
+    }
+
+    .flex#{$name} {
+        flex: 0 0 #{$val};
+    }
+}
+
+@each $name,
+$val in $widths {
+    @include mob(w#{$name}) {
+        width: #{$val} !important;
+    }
+    @include nm(w#{$name}) {
+        width: #{$val} !important;
+    }
+
+    @include mob(maxw#{$name}) {
+        max-width: #{$val};
+    }
+
+    @include tb(maxw#{$name}) {
+        max-width: #{$val};
+    }
+
+    @include mob(minw#{$name}) {
+        min-width: #{$val} !important;
+    }
+}
+
+@each $name,
+$val in $widths {
+    @include tb(w#{$name}) {
+        width: #{$val} !important;
+    }
+}
+
+@each $name,
+$val in $widths {
+    @include dk(w#{$name}) {
+        width: #{$val};
+    }
+}

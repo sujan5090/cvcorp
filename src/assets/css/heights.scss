@@ -1,0 +1,180 @@
+// stylelint-disable no-eol-whitespace
+
+/* doc
+---
+title: height
+name: height
+category: height
+---
+## height
+
+Height class: `.h\*`, e.g. `h50`
+Max and min heights: `.maxh*` and `.minh*`
+Values are referenced by pixel value but converted to rem in the css.
+See the code for available sizes.
+Max and min classes are not responsive.
+
+Example:
+<div class="w160 h40 h80-tb h160-dk bg-gainsboro mb3">h40 h80-tb h160-dk</div>
+
+*/
+
+// stylelint-enable
+// @import './breakpoints.scss';
+.min-height-viewport {
+    min-height: 100vh;
+}
+
+
+/* Heights */
+
+$heights: (0: 0, // 1: 0.07rem,
+    // 2: 0.125rem,
+    4: 0.25rem,
+    // 6: 0.375rem,
+    7: 0.4375rem,
+    // 10: 0.625rem,
+    // 11: 0.688rem,
+    // 14: 0.875rem,
+    16: 1rem,
+    // 18: 1.125rem,
+    20: 1.25rem, // 22: 1.375rem,
+    24: 1.5rem, // 26: 1.625rem,
+    // 27: 1.688rem,
+    // 28: 1.75rem,
+    30: 1.875rem, 
+    32: 2rem,
+    35: 2.187rem, // 36: 2.25rem,
+    // 38: 2.375rem,
+    40: 2.5rem,
+    43: 2.688rem,
+    44: 2.75rem, //   45: 2.813rem,
+    48: 3rem,
+    // 50: 3.125rem,
+    // 56: 3.5rem,
+    60: 3.75rem,
+    // 72: 4.5rem,
+    // 73: 4.6rem,
+    80: 5rem, // 82: 5.125rem,
+    90: 5.625rem,
+    100: 6.25rem,
+    108: 6.75rem,
+    120: 7.58rem,
+    122: 7.625rem,
+    // 125: 8.572rem,
+    134: 8.375rem,
+    // 144: 9rem,
+    150: 9.375rem,
+    // 160: 10rem,
+    // 196: 12.23rem,
+    // 200: 12.5rem,
+    230: 14.375rem,
+    240: 15rem,
+    // 244: 15.2rem,
+    // 245: 15.313rem,
+    250: 15.63rem,
+    265: 16.5625rem,
+    280: 17.5rem,
+    294: 18.375rem,
+    300: 18.75rem, // 340: 21.25rem,
+    // 350: 22rem,
+    392: 24.5rem,
+    394: 24.625rem,
+    400: 25rem, // 450: 28rem,
+    410: 25.625rem,
+    415: 25.93rem,
+    460: 28.75rem,
+    500: 31.25rem,
+    506: 31.62rem,
+    // 530: 33.125em,
+    540: 33.62em,
+    // 550: 34.5rem,
+    // 600: 37.5rem,
+    608: 38rem,
+    635: 39.62rem,
+    766: 47.87rem,
+    789: 49.312rem,
+    795: 49.687rem,
+    // 867: 54.188rem,
+    // 1056: 66rem,
+    // 2500: 93.75rem,
+    auto: auto,
+    inherit: inherit,
+    '20p': 20%,
+    '24p': 24.6%,
+    '25p': 25%,
+    '50p': 50%,
+    '68p': 68%,
+    '80p': 80%,
+    '100p': 100%,
+    '50vh': 50vh,
+    '100vh': 100vh);
+
+@each $name,
+$val in $heights {
+    .h#{$name} {
+        height: #{$val} !important;
+    }
+
+    .minh#{$name} {
+        min-height: #{$val} !important;
+    }
+
+    .maxh#{$name} {
+        max-height: #{$val} !important;
+    }
+}
+
+@each $name,
+$val in $heights {
+    @include nm(h#{$name}) {
+        height: #{$val};
+    }
+
+    @include mob(h#{$name}) {
+        height: #{$val};
+    }
+
+    @include mob(h#{$name}) {
+        min-height: #{$val};
+    }
+
+    @each $name,
+    $val in $heights {
+        @include dk(minh#{$name}) {
+            height: #{$val};
+        }
+    }
+}
+
+@each $name,
+$val in $heights {
+    @include tb(h#{$name}) {
+        height: #{$val};
+    }
+}
+
+@each $name,
+$val in $heights {
+    @include dk(h#{$name}) {
+        height: #{$val};
+    }
+}
+
+.maxh60 {
+    max-height: 3.75rem;
+}
+
+.maxh0 {
+    max-height: 0;
+}
+
+.maxh2500 {
+    max-height: 93.75rem;
+}
+
+.h100p-mb {
+    @include mobile {
+        height: 100%;
+    }
+}

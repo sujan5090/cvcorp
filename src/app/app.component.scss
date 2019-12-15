@@ -1,0 +1,42 @@
+:host {
+    width: 100%;
+    display: block;
+}
+
+.landscape-view {
+    background-image: url('/assets/images/exec-dashboard-rotate-to-portrate.png');
+    background-size: cover;
+    height: 100%;
+    display: none;
+    width: 100%;
+    background-position: center;
+    position: relative;
+    z-index: 2000;
+}
+
+@media only screen and (device-width: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape) {
+    .landscape-view {
+        display: block;
+    }
+    .dashboard-wrapper {
+        display: none;
+    }
+}
+
+@media (max-width: 750px) and (orientation: landscape) {
+    .landscape-view {
+        display: block;
+    }
+    .dashboard-wrapper {
+        display: none;
+    }
+}
+
+@media (min-height: 300px) {
+    .landscape-view {
+        display: none;
+    }
+    .dashboard-wrapper {
+        display: block;
+    }
+ }

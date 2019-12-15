@@ -1,22 +1,24 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { FormSubmitComponent } from './form-submit/form-submit.component';
+import { MainComponent } from './main/main.component';
+import { SearchResultComponent } from './search-result/search-result.component';
 
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/form',
+    redirectTo: '/main',
     pathMatch: 'full'
   },
   {
-    path: 'form',
-    component: FormSubmitComponent
+    path: 'main',
+    component: MainComponent
   },
-  // {
-  //   path: 'table-view',
-  //   component: 'SearchResultComponent'
-  // }
+  {
+    path: 'table-view',
+    component: SearchResultComponent
+  }
 ];
 
 @NgModule({

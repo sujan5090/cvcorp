@@ -1,0 +1,30 @@
+<div class="main-container">
+    <mat-toolbar color="primary">
+        <button mat-icon-button (click)="menuNav.toggle()" class="menu-button">
+            <mat-icon>menu</mat-icon>
+        </button>
+        <span class="header-nav">
+            <img class="logo cursor-pointer" src="assets/images/cvcorp-logo.png" />
+            <!-- <img class="logo-mobile cursor-pointer" src="assets/images/cvcorp-logo.png" />            -->
+        </span>
+    </mat-toolbar>
+
+    <mat-sidenav-container 
+        [ngClass]="{'sidenav-height': !hideToolbar}">
+        <mat-sidenav #menuNav id="menuNav" [mode]="sideNavMode" [opened]="false" class="main-menu"
+            (openedStart)="onMenuOpened()">
+            <div class="menu-container flex">
+                <div class="w53 icons"></div>
+                <div class="w80p labels ml-40 w100p pt9 flex flex-col justify-between">
+                        <div class="about-us outline-none cursor-pointer mb4" (click)="menuNav.toggle()"
+                        [routerLink]="'/table-view'">
+                        {{Languages.get('menu.studentData', 'start')}}
+                       </div>       
+                </div>
+            </div>
+        </mat-sidenav>
+        <div class="content dashboard-wrapper">
+            <!-- <router-outlet></router-outlet> -->
+        </div>
+    </mat-sidenav-container>
+</div>

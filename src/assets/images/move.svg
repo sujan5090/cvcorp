@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="15px" height="9px" viewBox="0 0 15 9" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.2 (67145) - http://www.bohemiancoding.com/sketch -->
+    <title>move</title>
+    <desc>Created with Sketch.</desc>
+    <g id="move" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.2">
+        <g id="equal" transform="translate(7.500000, 4.500000) scale(-1, -1) translate(-7.500000, -4.500000) " fill="#000000">
+            <path d="M1.71964565,9 L13.2803544,9 C14.230865,9 15,8.32907727 15,7.5 C15,6.67089545 14.230865,6 13.2803544,6 L1.71964565,6 C0.769150599,6 0,6.67089545 0,7.5 C0,8.32907727 0.769150599,9 1.71964565,9 Z" id="Path"></path>
+            <path d="M1.71964565,3 L13.2803544,3 C14.230865,3 15,2.32909091 15,1.5 C15,0.670909091 14.230865,0 13.2803544,0 L1.71964565,0 C0.769150599,0 0,0.670909091 0,1.5 C0,2.32909091 0.769150599,3 1.71964565,3 Z" id="Path"></path>
+        </g>
+    </g>
+</svg>

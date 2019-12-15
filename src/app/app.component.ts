@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFirestore } from 'angularfire2/firestore';
 import { Observable } from 'rxjs';
 import {map } from 'rxjs/operators';
 
@@ -12,17 +11,17 @@ export class AppComponent implements OnInit {
   title = 'cvcorp';
   public items: Observable<any[]>;
 
-  constructor(private db: AngularFirestore) {
+  constructor() {
 
   }
 
   ngOnInit() {
 
-    this.items = this.db.collection('/student-table').valueChanges();
+    // this.items = this.db.collection('/student-table').valueChanges();
 
-    this.items.pipe(map((res) => {
-       console.log('the res is ', res);
-    }));
+    // this.items.pipe(map((res) => {
+    //    console.log('the res is ', res);
+    // }));
 
   }
 }

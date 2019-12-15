@@ -26,7 +26,8 @@ import {
   MatStepperModule,
   MatButtonModule,
   MatProgressBar,
-  MatProgressBarModule
+  MatProgressBarModule,
+  MatDatepickerModule
 } from '@angular/material';
 import { MatExpansionModule } from '@angular/material/expansion';
 

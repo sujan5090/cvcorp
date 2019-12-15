@@ -1,0 +1,246 @@
+@import '~@angular/material/theming';
+@import '../assets/css/breakpoints.scss';
+@include mat-core();
+$app-palette: (
+    50: #f0faff, // original #e3f2fd,
+    100: #bbdefb,
+    200: #90caf9,
+    300: #64b5f6,
+    400: #42a5f5,
+    500: #0066a4,
+    600: #1e88e5,
+    700: #1976d2,
+    800: #1565c0,
+    900: #0d47a1,
+    A100: #82b1ff,
+    A200: #448aff,
+    A400: #2979ff,
+    A700: #2962ff,
+    contrast: (
+        50: $black-87-opacity,
+        100: $black-87-opacity,
+        200: $black-87-opacity,
+        300: $black-87-opacity,
+        400: $black-87-opacity,
+        500: white,
+        600: white,
+        700: white,
+        800: $white-87-opacity,
+        900: $white-87-opacity,
+        A100: $black-87-opacity,
+        A200: white,
+        A400: white,
+        A700: white,
+    )
+);
+
+$app-toolbar-palette: (
+    50: #e3f2fd,
+    100: #bbdefb,
+    200: #90caf9,
+    300: #64b5f6,
+    400: #42a5f5,
+    500: white,
+    600: #1e88e5,
+    700: #1976d2,
+    800: #1565c0,
+    900: #0d47a1,
+    A100: #82b1ff,
+    A200: #448aff,
+    A400: #2979ff,
+    A700: #2962ff,
+    contrast: (
+        50: $black-87-opacity,
+        100: $black-87-opacity,
+        200: $black-87-opacity,
+        300: $black-87-opacity,
+        400: $black-87-opacity,
+        500: #0066a4,
+        600: white,
+        700: white,
+        800: $white-87-opacity,
+        900: $white-87-opacity,
+        A100: $black-87-opacity,
+        A200: white,
+        A400: white,
+        A700: white,
+    )
+);
+$app-primary: mat-palette($app-palette);
+$app-toolbar: mat-palette($app-toolbar-palette);
+$app-accent: mat-palette($mat-blue, A200, A100, A400);
+$app-warn: mat-palette($mat-red);
+$app-theme: mat-light-theme( $app-primary, $app-accent, $app-warn);
+$app-toolbar-theme: mat-light-theme( $app-toolbar, $app-accent, $app-warn);
+@include angular-material-theme($app-theme);
+@include mat-toolbar-theme($app-toolbar-theme);
+@include mat-sidenav-theme($app-toolbar-theme);
+
+
+
+@mixin ellipsis($lines: 1) {
+    @if $lines==1 {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    @else {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: $lines;
+        -webkit-box-orient: vertical;
+    }
+}
+
+@mixin word-break {
+    white-space: pre-wrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
+}
+
+@mixin disabled {
+    pointer-events: none;
+    background-image: url('/assets/images/download-disabled.svg');
+}
+// -- flex mixins start --
+@mixin only-flex {
+    display: flex;
+}
+
+@mixin flex-justify-start-align-center {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+@mixin flex-justify-end-align-center {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+@mixin flex-justify-between-align-center {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+@mixin flex-justify-around-align-center {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+@mixin flex-justify-evenly-align-center {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+@mixin flex-align-start {
+    display: flex;
+    align-items: flex-start;
+}
+
+@mixin flex-align-end {
+    display: flex;
+    align-items: flex-end;
+}
+
+@mixin flex-align-center {
+    display: flex;
+    align-items: center;
+}
+// -- flex mixins end --
+
+// Color Variables
+$blue-theme: #005588;
+$red-alert: mat-color($mat-red, 500);
+$red-alert-highlight: mat-color($mat-red, 300);
+$green-normal: mat-color($mat-green, 500);
+$green-normal-highlight: mat-color($mat-green, 300);
+$orange-warning: mat-color($mat-amber, 800);
+$orange-warning-highlight: mat-color($mat-yellow, 700);
+$blue-value: mat-color($app-palette, 600);
+$blue-value-name: mat-color($mat-blue-grey, 500);
+$blue-heading: mat-color($mat-blue-grey, 400);
+$blue-heading-title: mat-color($app-palette, 500);
+$blue-card-border: mat-color($mat-blue-grey, 300, 0.5);
+$gray-subtitle: mat-color($mat-grey, 500);
+$gray-table-row: mat-color($mat-gray, 100);
+$black: mat-color($mat-gray, 900, 1);
+$white: white;
+$blue-grey: #95AFBE;
+$gray: mat-color($mat-grey, 800, 1);
+$light-gray: #e6e6e6;
+$border-gray:#979797;
+$border-light-gray: #e4e3e3;
+$thick-gray: #f3f3f3;
+$full-gray: #8C8C8C;
+$light-blue: #F8FAFB;
+$gray-blue: #D6DBDE;
+$blue-light-gray: #848B90;
+$search-focus-gray:#D1D5D6; 
+$gray-red: #D8D8D8;
+$gray-background: #E0DDDD;
+$gray-ececec: #ECECEC;
+$gray-4a4a4a: #4a4a4a;
+$blue-c9e4ff: #C9E4FF;
+$blue-8ac5fc: #8AC5FC;
+$reject-color: #DB512A;
+$green-5bb003: #5BB003;
+$white-f0f0f0: #f0f0f0;
+$gray-f7f7f7: #f7f7f7;
+$blue-99c3dd: #99C3DD;
+$light-purple: #DDDCDD;
+$gray-light-red: #DEDEDE;
+$blue-heading-color: #0065A4;
+$light-gray-color: #C0C0C0;
+$light-black: #3D3D3D;
+$header-white-background: #F6F6F6;
+$gray-border: #D6D0D0;
+$warning-color: #FF9800;
+$red-F60022: #F60022;
+$red-EAEAEA: #EAEAEA;
+$dark-gray: #EBEBEB;
+$gray-ABABAB:#ABABAB;
+$gray-CCD8DD: #CCD8DD;
+$gray-bbb: #bbb;
+$gray-D5D5D5: #D5D5D5;
+$gray-949494: #949494;
+$gray-e9e9e9: #e9e9e9;
+$white-f4f8fd: #f4f8fd;
+$blue-3266a4:#3266a4;
+$blue-387AEB: #387AEB;
+$blue-578: #578CE9;
+$grey-EDE: #EDEDED;
+$light-grey-387AEB: #387AEB;
+$grey-939494: #939494;
+$grey-a9aaaa: #a9aaaa;
+$grey-9B9B9B: #9B9B9B;
+$red-D84937: #D84937;
+$green-109D2E: #109D2E;
+$blue-E8F4FE: #E8F4FE;
+$gray-dddada : #dddada;
+// Color Variables Hard Value - Generated Manually
+.color-demo {
+    $red-alert: #f44336;
+    $red-alert-highlight: #e57373;
+    $green-normal: #4caf50;
+    $green-normal-highlight: #81c784;
+    $orange-warning: #ff8f00;
+    $orange-warning-highlight: #ffa000;
+    $blue-value: #1e88e5;
+    $blue-value-name: #607d8b;
+    $blue-heading: #78909c;
+    $blue-heading-title: #0066a4;
+    $blue-card-border: rgba(144, 164, 174, 0.5);
+    $gray-subtitle: #9e9e9e;
+    $gray-table-row: #f5f5f5;
+    $white: white;
+    $black: #000000;
+    $blue-grey: #95AFBE;
+    $gray: #4C4C4C;
+}

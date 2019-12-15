@@ -1,1 +1,463 @@
-<p>search-result-list works!</p>
+<section class="search-results search-result-list">
+    <mat-card class="search-term-container">
+        <mat-card-title>
+            {{searchType}} <span class="search-term">{{ searchTerm }}</span>
+        </mat-card-title>
+    </mat-card>
+    <div class="search-results-container">
+        <div *ngIf="displayData?.length || (data && data.units?.length)">
+        <mat-card-subtitle class="search-total">
+
+            <div class="search-result-count">
+                <!-- <app-back-button [navigateTo]="originUrl" [isNavigate]="isNavigate">
+                </app-back-button> -->
+                Total {{displayData?.length || 0}} results
+            </div>
+            <span class="btn-section">
+                <button mat-button class="export-csv"
+                    (click)="downloadFile()">{{Languages.get('global.exportCsv', 'capitalizeFirst')}}</button>
+                <!-- using css to conditionally change the button CTA -->
+                <button mat-button class="run-script-menu"
+                    [matMenuTriggerFor]="menu">{{Languages.get('global.runAction', 'capitalizeFirst')}}<mat-icon>
+                        arrow_drop_down</mat-icon></button>
+                <mat-menu #menu="matMenu" class="menu-panel" [xPosition]="'before'">
+                    <button mat-menu-item
+                        (click)="openScriptDialog()">{{Languages.get('global.runScript', 'capitalizeFirst')}}</button>
+                        <button mat-menu-item *ngIf="isSuperAdmin" [ngClass]="{'disableClass': !selectedRevolutions.length }"
+                        (click)="deleteResult()">{{Languages.get('global.delete', 'capitalizeFirst')}}</button>
+
+                </mat-menu>
+            </span>
+        </mat-card-subtitle>
+        <mat-card class="search-results-list-container">
+            <!-- List Headers -->
+            <div class="filter-toggle-container">
+
+                <span class="filter-title checkbox-title checkbox-column">
+                    <div class="filter-title__text select-all">{{Languages.get('global.selectAll', 'capitalizeFirst')}}
+                    </div>
+                    <mat-checkbox *ngIf="displayData?.length > 0" class='select-checkbox' [checked]="isSelectAll"
+                        (change)="selectAllRevolutions($event.checked)">
+                    </mat-checkbox>
+                </span>
+
+                <!-- Connection Status Header -->
+                <span class="filter-title connection-status connection-status-column">
+                    <div class="filter-title__text">{{Languages.get('global.connectionStatus', 'capitalizeFirst')}}
+                    </div>
+
+                    <mat-select [panelClass]="'panel-adjust'" [disableOptionCentering]="true"
+                        class="filter-toggle-dropdown" [placeholder]="'ALL'" multiple #connectionStatus
+                        [value]="selectedAvailability" (selectionChange)="onFilterChange($event.value, 'availability')">
+                        <div *ngIf="possibleFilterProperties['availability']?.length > 0" class='clearFilters'><span
+                                (click)="clearSelectedFilters(connectionStatus)">{{Languages.get('global.clear', 'capitalizeFirst')}}</span>
+                        </div>
+                        <mat-option class='searchResultList-filterOption'
+                            *ngFor="let item of possibleFilterProperties['availability']" [value]="item">
+                            <span class='searchResultList-filterOption-indicator'
+                                [ngStyle]="{ 'backgroundColor': connectionStatusColorMapping[item] }"></span>
+                            <span class='searchResultList-filterOption-text'>{{item}}</span>
+                        </mat-option>
+                    </mat-select>
+                </span>
+
+                <!-- Alert Status Header -->
+                <span class="filter-title alert-status alert-status-column">
+                    <div>Alert Status</div>
+
+                    <mat-select [panelClass]="'panel-adjust'" [disableOptionCentering]="true"
+                        class="filter-toggle-dropdown" [placeholder]="'ALL'" multiple #alertStatus
+                        [value]="selectedAlertstatus"
+                        (selectionChange)="onFilterChange($event.value, 'alertStatusWithoutDetails')">
+                        <div *ngIf="possibleFilterProperties['alertStatusWithoutDetails']?.length > 0"
+                            class='clearFilters'><span
+                                (click)="clearSelectedFilters(alertStatus)">{{Languages.get('global.clear', 'capitalizeFirst')}}</span>
+                        </div>
+                        <mat-option *ngFor="let item of possibleFilterProperties['alertStatusWithoutDetails']"
+                            [value]="item" class='searchResultList-filterOption'>
+                            <span class='searchResultList-filterOption-indicator'
+                                [ngStyle]="{ 'backgroundColor': alertsToColorMapping[item] }"></span>
+                            <span class='searchResultList-filterOption-text'>{{item}}</span>
+                        </mat-option>
+                    </mat-select>
+                </span>
+
+                <!-- Serial Number Header -->
+                <span class="filter-title ba-number ba-number-column">
+                    <div class="filter-title__text">{{Languages.get('global.serialNumber', 'capitalizeFirst')}}</div>
+                    <span class="ba-number-sort-toggle">
+                        <button class="ba-toggle" (click)="$event.stopPropagation();toggleSort('serialNo')">
+                            <mat-icon class="ba-toggle-icon"
+                                [ngClass]="{ 'ba-toggle-highlighted': (sortModel.serialNo === 'desc') }" inline>
+                                arrow_upward
+                            </mat-icon>
+                            <mat-icon class="ba-toggle-icon"
+                                [ngClass]="{ 'ba-toggle-highlighted': (sortModel.serialNo === 'asc') }" inline>
+                                arrow_downward
+                            </mat-icon>
+                        </button>
+                    </span>
+                </span>
+
+                <!-- StoreName Header  -->
+                <span class="filter-title ba-number ba-number-column">
+                    <div class="filter-title__text">{{Languages.get('global.storeName', 'capitalizeFirst')}}</div>
+                    <span class="ba-number-sort-toggle">
+                        <button class="ba-toggle" (click)="$event.stopPropagation();toggleSort('storeName')">
+                            <mat-icon class="ba-toggle-icon"
+                                [ngClass]="{ 'ba-toggle-highlighted': (sortModel.storeName === 'desc') }" inline>
+                                arrow_upward
+                            </mat-icon>
+                            <mat-icon class="ba-toggle-icon"
+                                [ngClass]="{ 'ba-toggle-highlighted': (sortModel.storeName === 'asc') }" inline>
+                                arrow_downward
+                            </mat-icon>
+                        </button>
+                    </span>
+                    <mat-select [panelClass]="'panel-adjust'" [disableOptionCentering]="true"
+                    class="filter-toggle-dropdown" placeholder="ALL" multiple #store
+                    [value] = "selectedFilterValues?.storeName"
+                    (selectionChange)="onFilterChange($event.value, 'storeName')">
+                    <ngx-mat-select-search [formControl]="filterSearches?.storeName.ctrl" [clearSearchInput]="false"
+                        [placeholderLabel]="Languages.get('global.searchCustomer', 'capitalizeFirst')"
+                        [noEntriesFoundLabel]="Languages.get('global.noMatchFound', 'capitalizeFirst')">
+                    </ngx-mat-select-search>
+                    <div *ngIf="displayFilters['storeName']?.length > 0" class='clearFilters'><span
+                            (click)="clearSelectedFilters(store)">{{Languages.get('global.clear', 'capitalizeFirst')}}</span>
+                    </div>
+                    <mat-option *ngFor="let item of displayFilters['storeName']" [value]="item"
+                        class='searchResultList-filterOption'>
+                        <span class='searchResultList-filterOption-text'>{{item}}</span>
+                    </mat-option>
+                </mat-select>
+                </span>
+
+                <!-- Model Number Header -->
+                <span class="filter-title model-number-column">
+                    <div class="filter-title__text">{{Languages.get('global.modelNo', 'capitalizeFirst')}}</div>
+                    <mat-select [panelClass]="'panel-adjust'" [disableOptionCentering]="true"
+                        class="filter-toggle-dropdown" placeholder="ALL" multiple #model
+                        [value] = "selectedFilterValues?.model"
+                        (selectionChange)="onFilterChange($event.value, 'model')">
+                        <ngx-mat-select-search [formControl]="filterSearches?.model.ctrl" [clearSearchInput]="false"
+                            [placeholderLabel]="Languages.get('global.searchModelNumber', 'capitalizeFirst')"
+                            [noEntriesFoundLabel]="Languages.get('global.noMatchFound', 'capitalizeFirst')">
+                        </ngx-mat-select-search>
+                        <div *ngIf="displayFilters['model']?.length > 0" class='clearFilters'><span
+                                (click)="clearSelectedFilters(model)">{{Languages.get('global.clear', 'capitalizeFirst')}}</span>
+                        </div>
+                        <mat-option *ngFor="let item of displayFilters['model']" [value]="item"
+                            class='searchResultList-filterOption'>
+                            <span class='searchResultList-filterOption-text'>{{item}}</span>
+                        </mat-option>
+                    </mat-select>
+                </span>
+
+                <!-- Customer Header -->
+                <span class="filter-title customer-column">
+                    <span class="filter-sort">
+                        <span class="filter-title__text">{{Languages.get('global.customer', 'capitalizeFirst')}}</span>
+                        <span class="ba-number-sort-toggle">
+                            <button class="ba-toggle" (click)="$event.stopPropagation();toggleSort('company')">
+                                <mat-icon class="ba-toggle-icon"
+                                    [ngClass]="{ 'ba-toggle-highlighted': (sortModel.company === 'desc') }" inline>
+                                    arrow_upward
+                                </mat-icon>
+                                <mat-icon class="ba-toggle-icon"
+                                    [ngClass]="{ 'ba-toggle-highlighted': (sortModel.company === 'asc') }" inline>
+                                    arrow_downward
+                                </mat-icon>
+                            </button>
+                        </span>
+                    </span>
+                    <mat-select [panelClass]="'panel-adjust'" [disableOptionCentering]="true"
+                        class="filter-toggle-dropdown" placeholder="ALL" multiple #customer
+                        [value] = "selectedFilterValues?.company"
+                        (selectionChange)="onFilterChange($event.value, 'company')">
+                        <ngx-mat-select-search [formControl]="filterSearches?.company.ctrl" [clearSearchInput]="false"
+                            [placeholderLabel]="Languages.get('global.searchCustomer', 'capitalizeFirst')"
+                            [noEntriesFoundLabel]="Languages.get('global.noMatchFound', 'capitalizeFirst')">
+                        </ngx-mat-select-search>
+                        <div *ngIf="displayFilters['company']?.length > 0" class='clearFilters'><span
+                                (click)="clearSelectedFilters(customer)">{{Languages.get('global.clear', 'capitalizeFirst')}}</span>
+                        </div>
+                        <mat-option *ngFor="let item of displayFilters['company']" [value]="item"
+                            class='searchResultList-filterOption'>
+                            <span class='searchResultList-filterOption-text'>{{item}}</span>
+                        </mat-option>
+                    </mat-select>
+                </span>
+
+                <!-- Location Header -->
+                <span class="filter-title location location-column">
+                    <span class="filter-sort">
+                        <span class="filter-title__text">{{Languages.get('global.location', 'capitalizeFirst')}}</span>
+                        <span class="ba-number-sort-toggle">
+                            <button class="ba-toggle" (click)="$event.stopPropagation();toggleSort('location')">
+                                <mat-icon class="ba-toggle-icon"
+                                    [ngClass]="{ 'ba-toggle-highlighted': (sortModel.location === 'desc') }" inline>
+                                    arrow_upward
+                                </mat-icon>
+                                <mat-icon class="ba-toggle-icon"
+                                    [ngClass]="{ 'ba-toggle-highlighted': (sortModel.location === 'asc') }" inline>
+                                    arrow_downward
+                                </mat-icon>
+                            </button>
+                        </span>
+                    </span>
+                    <mat-select [panelClass]="'panel-adjust'" [disableOptionCentering]="true"
+                        class="filter-toggle-dropdown" placeholder="ALL" multiple #location
+                        [value] = "selectedFilterValues?.location"
+                        (selectionChange)="onFilterChange($event.value, 'location')">
+                        <ngx-mat-select-search [formControl]="filterSearches.location.ctrl" [clearSearchInput]="false"
+                            [placeholderLabel]="Languages.get('global.searchLocation', 'capitalizeFirst')"
+                            [noEntriesFoundLabel]="Languages.get('global.noMatchFound', 'capitalizeFirst')">
+                        </ngx-mat-select-search>
+                        <div *ngIf="displayFilters['location']?.length > 0" class='clearFilters'><span
+                                (click)="clearSelectedFilters(location)">{{Languages.get('global.clear', 'capitalizeFirst')}}</span>
+                        </div>
+                        <span *ngFor="let item of displayFilters['location'];let index = index;">
+                            <mat-option [value]="item" class='searchResultList-filterOption'>
+                                <span class='searchResultList-filterOption-text'>
+                                    {{item}}
+                                </span>
+                            </mat-option>
+                        </span>
+
+                    </mat-select>
+                </span>
+
+                <!-- App Version Header -->
+                <span class="filter-title app-version app-version-column">
+                    <div class="filter-sort">
+                        <div class="filter-title__text">{{Languages.get('global.appVersion', 'capitalizeFirst')}}</div>
+                        <span class="ba-number-sort-toggle">
+                            <button class="ba-toggle"
+                                (click)="$event.stopPropagation();toggleSort('revolutionVersion')">
+                                <mat-icon class="ba-toggle-icon"
+                                    [ngClass]="{ 'ba-toggle-highlighted': (sortModel.revolutionVersion === 'desc') }"
+                                    inline>
+                                    arrow_upward
+                                </mat-icon>
+                                <mat-icon class="ba-toggle-icon"
+                                    [ngClass]="{ 'ba-toggle-highlighted': (sortModel.revolutionVersion === 'asc') }"
+                                    inline>
+                                    arrow_downward
+                                </mat-icon>
+                            </button>
+                        </span>
+                    </div>
+                    <mat-select [panelClass]="'panel-adjust'" [disableOptionCentering]="true"
+                        class="filter-toggle-dropdown" placeholder="ALL" multiple #appVersion
+                        [value] = "selectedFilterValues?.revolutionVersion"
+                        (selectionChange)="onFilterChange($event.value, 'revolutionVersion')">
+                        <ngx-mat-select-search [formControl]="filterSearches?.revolutionVersion.ctrl"
+                            [clearSearchInput]="false"
+                            [placeholderLabel]="Languages.get('global.searchAppVersion', 'capitalizeFirst')"
+                            [noEntriesFoundLabel]="Languages.get('global.noMatchFound', 'capitalizeFirst')">
+                        </ngx-mat-select-search>
+                        <div *ngIf="displayFilters['revolutionVersion']?.length > 0"
+                            class='searchResultList-filterOption clearFilters'><span
+                                (click)="clearSelectedFilters(appVersion)">{{Languages.get('global.clear', 'capitalizeFirst')}}</span>
+                        </div>
+                        <mat-option *ngFor="let item of displayFilters['revolutionVersion']" [value]="item"
+                            class='searchResultList-filterOption'>
+                            <span class='searchResultList-filterOption-text'>{{item}}</span>
+                        </mat-option>
+                    </mat-select>
+                </span>
+
+                <!-- Agent Version Header -->
+                <span class="filter-title app-version app-version-column">
+                    <div class="filter-sort">
+                        <div class="filter-title__text">{{Languages.get('global.agentVersion', 'capitalizeFirst')}}
+                        </div>
+                        <span class="ba-number-sort-toggle">
+                            <button class="ba-toggle" (click)="$event.stopPropagation();toggleSort('iotVersionNumber')">
+                                <mat-icon class="ba-toggle-icon"
+                                    [ngClass]="{ 'ba-toggle-highlighted': (sortModel.iotVersionNumber === 'desc') }"
+                                    inline>
+                                    arrow_upward
+                                </mat-icon>
+                                <mat-icon class="ba-toggle-icon"
+                                    [ngClass]="{ 'ba-toggle-highlighted': (sortModel.iotVersionNumber === 'asc') }"
+                                    inline>
+                                    arrow_downward
+                                </mat-icon>
+                            </button>
+                        </span>
+                    </div>
+                    <mat-select [panelClass]="'panel-adjust'" [disableOptionCentering]="true"
+                        class="filter-toggle-dropdown" placeholder="ALL" multiple #agentVersion
+                        [value] = "selectedFilterValues?.iotVersionNumber"
+                        (selectionChange)="onFilterChange($event.value, 'iotVersionNumber')">
+                        <ngx-mat-select-search [formControl]="filterSearches?.iotVersionNumber.ctrl"
+                            [clearSearchInput]="false"
+                            [placeholderLabel]="Languages.get('global.searchAgentVersion', 'capitalizeFirst')"
+                            [noEntriesFoundLabel]="Languages.get('global.noMatchFound', 'capitalizeFirst')">
+                        </ngx-mat-select-search>
+                        <div *ngIf="displayFilters['iotVersionNumber']?.length > 0"
+                            class='searchResultList-filterOption clearFilters'><span
+                                (click)="clearSelectedFilters(agentVersion)">{{Languages.get('global.clear', 'capitalizeFirst')}}</span>
+                        </div>
+                        <mat-option *ngFor="let item of displayFilters['iotVersionNumber']" [value]="item"
+                            class='searchResultList-filterOption'>
+                            <span class='searchResultList-filterOption-text'>{{item}}</span>
+                        </mat-option>
+                    </mat-select>
+                </span>
+
+            </div>
+
+            <!-- List rows -->
+            <div class="list-container" *ngIf="displayData?.length > 0 && displayDataUpdated" virtualScroller #scroll
+                [items]="displayData">
+                <div class="row" [ngClass]="{
+                            'row-divider': i < displayData?.length-1,
+                            'dashboard-row': isDashboard,
+                            'cursor-default': (userType === 'customer' || userType === 'customer-admin')
+                         }" *ngFor="let revolution of scroll.viewPortItems; let i = index">
+
+                    <!-- Checkbox column -->
+                    <div class="complication checkbox checkbox-column">
+                        <mat-checkbox (click)="$event.stopPropagation()" [checked]="isSelected(revolution.deviceId)"
+                            (change)="onRowSelectChange($event.checked, revolution);">
+                        </mat-checkbox>
+                    </div>
+
+                    <div class="inner-row"
+                        (click)="$event.stopPropagation();getMachineDetail(revolution.deviceId, revolution.serialNo)">
+                        <div class="complication connection-status connection-status-column">
+                            <span class="img-container">
+                                <img [attr.src]="revolution.path" />
+                                <div class="rev-availability-status" [ngClass]="{
+                                      'availability-green': toLower(revolution?.availability) === 'online',
+                                      'availability-red': toLower(revolution?.availability) == 'missing',
+                                      'availability-grey': toLower(revolution?.availability) == 'muted'
+                                  }">
+                                    {{revolution?.availability}}
+                                </div>
+                            </span>
+                        </div>
+
+                        <!-- Alert Status column -->
+                        <div class='alert-status-column complication left-justified alert-status'>
+                            <div class='alert-status-result mobile'>
+                                <span class='alert-status-short'>
+                                    <div>
+                                        <div class="alert-status-dot" [ngClass]="{
+                                              'needsAttention': toLower(revolution?.alertStatusWithoutDetails) === 'needs attention',
+                                              'problemDetected': toLower(revolution?.alertStatusWithoutDetails) === 'problem detected',
+                                              'degrade': toLower(revolution?.alertStatusWithoutDetails) === 'degrade',
+                                              'problemNotified': toLower(revolution?.alertStatusWithoutDetails) === 'problem notified',
+                                              'notConnected': toLower(revolution?.alertStatusWithoutDetails) === 'not connected',
+                                              'goodNeedService': toLower(revolution?.alertStatusWithoutDetails) === 'good (need service)',
+                                              'goodNeedService': toLower(revolution?.alertStatusWithoutDetails) === 'good (no problems)',
+                                              'goodNeedService': toLower(revolution?.alertStatusWithoutDetails) === 'good (odometer needs service)',
+                                              'good': toLower(revolution?.alertStatusWithoutDetails) === 'good'
+                                      }"></div>
+                                    </div>
+                                    {{alertStatusAbbreviationMapping[revolution?.alertStatusWithoutDetails]}}
+                                </span>
+                            </div>
+                            <div class='alert-status-result desktop'>
+                                <div class='alert-status-short'>
+                                    <div>
+                                        <div class="alert-status-dot" [ngClass]="{
+                                              'needsAttention': toLower(revolution?.alertStatusWithoutDetails) === 'needs attention',
+                                              'problemDetected': toLower(revolution?.alertStatusWithoutDetails) === 'problem detected',
+                                              'degrade': toLower(revolution?.alertStatusWithoutDetails) === 'degrade',
+                                              'problemNotified': toLower(revolution?.alertStatusWithoutDetails) === 'problem notified',
+                                              'notConnected': toLower(revolution?.alertStatusWithoutDetails) === 'not connected',
+                                              'goodNeedService': toLower(revolution?.alertStatusWithoutDetails) === 'good (need service)',
+                                              'goodNeedService': toLower(revolution?.alertStatusWithoutDetails) === 'good (no problems)',
+                                              'goodNeedService': toLower(revolution?.alertStatusWithoutDetails) === 'good (odometer needs service)',
+                                              'good': toLower(revolution?.alertStatusWithoutDetails) === 'good'
+                                      }"></div>
+                                    </div>
+                                    <span class="alert-status-short-text"
+                                        *ngIf="revolution?.alertStatusWithoutDetails">{{revolution?.alertStatusWithoutDetails}}</span>
+                                </div>
+                                <div class='value alert-status-long'>
+                                    {{revolution?.alertStatus }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Serial Number ( BA ) column -->
+                        <div class='complication ba-number ba-number-column'>
+                            <span class='ba-number'>
+                                {{revolution?.serialNo === null ? notAvailable : revolution?.serialNo}}
+                            </span>
+                        </div>
+                        <div class='complication ba-number ba-number-column'>
+                            <span class='ba-number'>
+                                {{revolution?.storeName === null ? notAvailable : revolution?.storeName}}
+                            </span>
+                        </div>
+
+                        <!-- Model column -->
+                        <div class='complication model-number-column'>
+                            <span class='model-number'>
+                                {{revolution?.model=== null ? notAvailable :revolution?.model}}
+                            </span>
+                        </div>
+
+                        <!-- Customer column -->
+                        <div class="complication customer-column">
+                            <span class="machine-details">
+                                <span class="customer">
+                                    {{revolution?.storeName === null ? notAvailable : revolution?.company}}
+                                </span>
+                            </span>
+                        </div>
+
+                        <!-- Location column -->
+                        <div class="complication location location-column">
+                            <mat-icon>location_on</mat-icon>
+                            <div> {{revolution?.location}}</div>
+                        </div>
+
+                        <!-- App Version column -->
+                        <div class="complication app-version app-version-column">
+                            <span class="details tab-hide detail-app-version">
+                                <div class="heading app-version">
+                                    {{Languages.get('global.revAppVersion', 'capitalizeFirst')}}
+                                </div>
+                                <div class="value app-version">
+                                    {{revolution?.revolutionVersion}}
+                                </div>
+                            </span>
+                        </div>
+
+                        <!-- Agent Version column -->
+                        <div class="complication app-version app-version-column">
+                            <span class="details tab-hide detail-app-version">
+                                <div class="heading app-version">
+                                    {{Languages.get('global.agentVersion', 'capitalizeFirst')}}
+                                </div>
+                                <div class="value app-version">
+                                    {{revolution?.iotVersionNumber}}
+                                </div>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- no data -->
+            <div class="no-data" *ngIf="displayData?.length === 0 && displayDataUpdated">
+                <mat-card>
+                    <mat-card-content>
+                        <div class="no-matches">
+                            <span>{{Languages.get('global.noMatchesAvailable', 'upper')}}</span>
+                            <span>{{Languages.get('global.noFilterMatch', 'sentence')}}</span>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+
+        </mat-card>
+        </div>
+    </div>
+</section>

@@ -1,5 +1,6 @@
 import { Component, OnInit, OnChanges, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { SearchResultService } from './search-result.service';
 
 @Component({
   selector: 'app-search-result',
@@ -19,13 +20,18 @@ export class SearchResultComponent implements OnInit, OnDestroy {
    */
   constructor(
       public route: ActivatedRoute,
-      public router: Router
+      public router: Router,
+      public searchResultService: SearchResultService
   ) { }
 
   /**
    * Subscribes to searchResults.
    */
   ngOnInit() {
+    // this.searchResultService.getBoards();
+      this.searchResultService.getBoards().subscribe(res =>{
+          console.log('the res is ', res);
+      });
   }
 
   /**

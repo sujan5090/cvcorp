@@ -12,6 +12,8 @@ import { SearchResultComponent } from './search-result/search-result.component';
 import { SearchResultListComponent } from './search-result-list/search-result-list.component';
 import { MaterialModule } from './material-module';
 import { MainComponent } from './main/main.component';
+import { VirtualScrollerModule } from 'ngx-virtual-scroller';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 @NgModule({
   declarations: [
@@ -30,6 +32,8 @@ import { MainComponent } from './main/main.component';
     ReactiveFormsModule,
     MatButtonModule,
     MaterialModule,
+    VirtualScrollerModule,
+    NgxMatSelectSearchModule
   ],
   providers: [],
   bootstrap: [AppComponent]

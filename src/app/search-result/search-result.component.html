@@ -1,1 +1,9 @@
-<p>search-result works!</p>
+<div class="search-result-component">
+    <app-search-result-list 
+        [data]="searchResults"
+        [filters]="filters"
+        [searchTerm]="lastSearchTerm"
+        [searchType] = "searchType">
+    </app-search-result-list>
+</div>
+

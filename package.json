@@ -27,7 +27,10 @@
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1",
-    "lodash": "^4.17.10"
+    "lodash": "^4.17.10",
+    "ngx-virtual-scroller": "^1.0.16",
+    "ngx-mat-select-search": "^1.5.2",
+    "ngx-material-timepicker": "^2.12.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.803.20",

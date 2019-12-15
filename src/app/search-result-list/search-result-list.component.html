@@ -55,7 +55,7 @@
                         <mat-option class='searchResultList-filterOption'
                             *ngFor="let item of possibleFilterProperties['availability']" [value]="item">
                             <span class='searchResultList-filterOption-indicator'
-                                [ngStyle]="{ 'backgroundColor': connectionStatusColorMapping[item] }"></span>
+                                ></span>
                             <span class='searchResultList-filterOption-text'>{{item}}</span>
                         </mat-option>
                     </mat-select>
@@ -76,7 +76,7 @@
                         <mat-option *ngFor="let item of possibleFilterProperties['alertStatusWithoutDetails']"
                             [value]="item" class='searchResultList-filterOption'>
                             <span class='searchResultList-filterOption-indicator'
-                                [ngStyle]="{ 'backgroundColor': alertsToColorMapping[item] }"></span>
+                                ></span>
                             <span class='searchResultList-filterOption-text'>{{item}}</span>
                         </mat-option>
                     </mat-select>
@@ -312,11 +312,7 @@
             <!-- List rows -->
             <div class="list-container" *ngIf="displayData?.length > 0 && displayDataUpdated" virtualScroller #scroll
                 [items]="displayData">
-                <div class="row" [ngClass]="{
-                            'row-divider': i < displayData?.length-1,
-                            'dashboard-row': isDashboard,
-                            'cursor-default': (userType === 'customer' || userType === 'customer-admin')
-                         }" *ngFor="let revolution of scroll.viewPortItems; let i = index">
+                <div class="row"  *ngFor="let revolution of scroll.viewPortItems; let i = index">
 
                     <!-- Checkbox column -->
                     <div class="complication checkbox checkbox-column">
@@ -330,11 +326,7 @@
                         <div class="complication connection-status connection-status-column">
                             <span class="img-container">
                                 <img [attr.src]="revolution.path" />
-                                <div class="rev-availability-status" [ngClass]="{
-                                      'availability-green': toLower(revolution?.availability) === 'online',
-                                      'availability-red': toLower(revolution?.availability) == 'missing',
-                                      'availability-grey': toLower(revolution?.availability) == 'muted'
-                                  }">
+                                <div class="rev-availability-status" >
                                     {{revolution?.availability}}
                                 </div>
                             </span>

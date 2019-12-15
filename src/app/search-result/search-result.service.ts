@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase';
 import { Observable } from 'rxjs';
+import { StudentData } from '../app.interface';
 // import firestore from 'firebase/firestore';
 
 @Injectable({
@@ -18,20 +19,31 @@ export class SearchResultService {
 
   }
 
-  getBoards() {
+  getBoards(): Observable<any[]> {
     return new Observable((observer) => {
       this.ref.onSnapshot((querySnapshot) => {
-        let boards = [];
+        const students: StudentData[] = [];
         querySnapshot.forEach((doc) => {
-          let data = doc.data();
-          boards.push({
+          const data = doc.data();
+          console.log(' the doc ', data);
+          students.push({
             key: doc.id,
-            title: data.title,
-            description: data.description,
-            author: data.author
+            tenthmarks:  data['10thMarks'],
+            batch: data.batch,
+            branch: data.branch,
+            btechMarks: data.btechMarks,
+            collegeName: data.collegeName,
+            email: data.email,
+            gender: data.gender,
+            interMarks: data.interMarks,
+            name: data.name,
+            phoneNo: data['phone-no'],
+            placementReady: data.placementReady,
+            status: data.status,
+            yearOfPassout: data.yearOfPassout
           });
         });
-        observer.next(boards);
+        observer.next(students);
       });
     });
   }

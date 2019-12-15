@@ -1,9 +1,4 @@
-<div class="search-result-component">
-    <app-search-result-list 
-        [data]="searchResults"
-        [filters]="filters"
-        [searchTerm]="lastSearchTerm"
-        [searchType] = "searchType">
+<div class="search-result-component" *ngIf="searchResults.length">
+    <app-search-result-list [data]="searchResults">
     </app-search-result-list>
 </div>
-

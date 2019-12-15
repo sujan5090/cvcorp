@@ -1,6 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import {map } from 'rxjs/operators';
+import * as firebase from 'firebase';
+// import firestore from 'firebase/firestore';
+
+const settings = {timestampsInSnapshots: true};
+const config = {
+  apiKey: 'AIzaSyA3oyMpyl-YvVAhLfjEYCnd9dEovmvbpac',
+  authDomain: 'cvcorp-d1b70.firebaseapp.com',
+  databaseURL: 'https://cvcorp-d1b70.firebaseio.com',
+  projectId: 'cvcorp-d1b70',
+  storageBucket: 'cvcorp-d1b70.appspot.com',
+};
 
 @Component({
   selector: 'app-root',
@@ -9,19 +19,14 @@ import {map } from 'rxjs/operators';
 })
 export class AppComponent implements OnInit {
   title = 'cvcorp';
-  public items: Observable<any[]>;
 
   constructor() {
 
   }
 
   ngOnInit() {
-
-    // this.items = this.db.collection('/student-table').valueChanges();
-
-    // this.items.pipe(map((res) => {
-    //    console.log('the res is ', res);
-    // }));
+    firebase.initializeApp(config);
+    // firebase.firestore().settings(settings);
 
   }
 }

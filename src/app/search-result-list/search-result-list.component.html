@@ -17,16 +17,6 @@
                 <button mat-button class="export-csv"
                     (click)="downloadFile()">{{Languages.get('global.exportCsv', 'capitalizeFirst')}}</button>
                 <!-- using css to conditionally change the button CTA -->
-                <button mat-button class="run-script-menu"
-                    [matMenuTriggerFor]="menu">{{Languages.get('global.runAction', 'capitalizeFirst')}}<mat-icon>
-                        arrow_drop_down</mat-icon></button>
-                <mat-menu #menu="matMenu" class="menu-panel" [xPosition]="'before'">
-                    <button mat-menu-item
-                        (click)="openScriptDialog()">{{Languages.get('global.runScript', 'capitalizeFirst')}}</button>
-                        <button mat-menu-item *ngIf="isSuperAdmin" [ngClass]="{'disableClass': !selectedRevolutions.length }"
-                        (click)="deleteResult()">{{Languages.get('global.delete', 'capitalizeFirst')}}</button>
-
-                </mat-menu>
             </span>
         </mat-card-subtitle>
         <mat-card class="search-results-list-container">
@@ -41,16 +31,15 @@
                     </mat-checkbox>
                 </span>
 
-                <!-- Connection Status Header -->
+                <!-- name Header -->
                 <span class="filter-title connection-status connection-status-column">
-                    <div class="filter-title__text">{{Languages.get('global.connectionStatus', 'capitalizeFirst')}}
+                    <div class="filter-title__text">Name
                     </div>
-
                     <mat-select [panelClass]="'panel-adjust'" [disableOptionCentering]="true"
-                        class="filter-toggle-dropdown" [placeholder]="'ALL'" multiple #connectionStatus
-                        [value]="selectedAvailability" (selectionChange)="onFilterChange($event.value, 'availability')">
-                        <div *ngIf="possibleFilterProperties['availability']?.length > 0" class='clearFilters'><span
-                                (click)="clearSelectedFilters(connectionStatus)">{{Languages.get('global.clear', 'capitalizeFirst')}}</span>
+                        class="filter-toggle-dropdown" [placeholder]="'ALL'" multiple #name
+                        [value]="selectedAvailability" (selectionChange)="onFilterChange($event.value, 'name')">
+                        <div *ngIf="possibleFilterProperties['name']?.length > 0" class='clearFilters'><span
+                                (click)="clearSelectedFilters(name)">{{Languages.get('global.clear', 'capitalizeFirst')}}</span>
                         </div>
                         <mat-option class='searchResultList-filterOption'
                             *ngFor="let item of possibleFilterProperties['availability']" [value]="item">
@@ -61,19 +50,19 @@
                     </mat-select>
                 </span>
 
-                <!-- Alert Status Header -->
+                <!-- email Header -->
                 <span class="filter-title alert-status alert-status-column">
-                    <div>Alert Status</div>
+                    <div>Email </div>
 
                     <mat-select [panelClass]="'panel-adjust'" [disableOptionCentering]="true"
-                        class="filter-toggle-dropdown" [placeholder]="'ALL'" multiple #alertStatus
+                        class="filter-toggle-dropdown" [placeholder]="'ALL'" multiple #email
                         [value]="selectedAlertstatus"
-                        (selectionChange)="onFilterChange($event.value, 'alertStatusWithoutDetails')">
-                        <div *ngIf="possibleFilterProperties['alertStatusWithoutDetails']?.length > 0"
+                        (selectionChange)="onFilterChange($event.value, 'email')">
+                        <div *ngIf="possibleFilterProperties['email']?.length > 0"
                             class='clearFilters'><span
-                                (click)="clearSelectedFilters(alertStatus)">{{Languages.get('global.clear', 'capitalizeFirst')}}</span>
+                                (click)="clearSelectedFilters(email)">{{Languages.get('global.clear', 'capitalizeFirst')}}</span>
                         </div>
-                        <mat-option *ngFor="let item of possibleFilterProperties['alertStatusWithoutDetails']"
+                        <mat-option *ngFor="let item of possibleFilterProperties['email']"
                             [value]="item" class='searchResultList-filterOption'>
                             <span class='searchResultList-filterOption-indicator'
                                 ></span>
@@ -82,9 +71,9 @@
                     </mat-select>
                 </span>
 
-                <!-- Serial Number Header -->
+                <!-- gender Header -->
                 <span class="filter-title ba-number ba-number-column">
-                    <div class="filter-title__text">{{Languages.get('global.serialNumber', 'capitalizeFirst')}}</div>
+                    <div class="filter-title__text">Gender</div>
                     <span class="ba-number-sort-toggle">
                         <button class="ba-toggle" (click)="$event.stopPropagation();toggleSort('serialNo')">
                             <mat-icon class="ba-toggle-icon"
@@ -99,7 +88,7 @@
                     </span>
                 </span>
 
-                <!-- StoreName Header  -->
+                <!-- phone-no Header  -->
                 <span class="filter-title ba-number ba-number-column">
                     <div class="filter-title__text">{{Languages.get('global.storeName', 'capitalizeFirst')}}</div>
                     <span class="ba-number-sort-toggle">
@@ -132,7 +121,7 @@
                 </mat-select>
                 </span>
 
-                <!-- Model Number Header -->
+                <!-- yearOfPassout Header -->
                 <span class="filter-title model-number-column">
                     <div class="filter-title__text">{{Languages.get('global.modelNo', 'capitalizeFirst')}}</div>
                     <mat-select [panelClass]="'panel-adjust'" [disableOptionCentering]="true"
@@ -153,7 +142,7 @@
                     </mat-select>
                 </span>
 
-                <!-- Customer Header -->
+                <!-- Batch-no Header -->
                 <span class="filter-title customer-column">
                     <span class="filter-sort">
                         <span class="filter-title__text">{{Languages.get('global.customer', 'capitalizeFirst')}}</span>
@@ -188,7 +177,7 @@
                     </mat-select>
                 </span>
 
-                <!-- Location Header -->
+                <!-- branch Header -->
                 <span class="filter-title location location-column">
                     <span class="filter-sort">
                         <span class="filter-title__text">{{Languages.get('global.location', 'capitalizeFirst')}}</span>
@@ -227,7 +216,7 @@
                     </mat-select>
                 </span>
 
-                <!-- App Version Header -->
+                <!-- college-name Header -->
                 <span class="filter-title app-version app-version-column">
                     <div class="filter-sort">
                         <div class="filter-title__text">{{Languages.get('global.appVersion', 'capitalizeFirst')}}</div>
@@ -267,7 +256,47 @@
                     </mat-select>
                 </span>
 
-                <!-- Agent Version Header -->
+                <!-- status Header -->
+                <span class="filter-title app-version app-version-column">
+                    <div class="filter-sort">
+                        <div class="filter-title__text">{{Languages.get('global.agentVersion', 'capitalizeFirst')}}
+                        </div>
+                        <span class="ba-number-sort-toggle">
+                            <button class="ba-toggle" (click)="$event.stopPropagation();toggleSort('iotVersionNumber')">
+                                <mat-icon class="ba-toggle-icon"
+                                    [ngClass]="{ 'ba-toggle-highlighted': (sortModel.iotVersionNumber === 'desc') }"
+                                    inline>
+                                    arrow_upward
+                                </mat-icon>
+                                <mat-icon class="ba-toggle-icon"
+                                    [ngClass]="{ 'ba-toggle-highlighted': (sortModel.iotVersionNumber === 'asc') }"
+                                    inline>
+                                    arrow_downward
+                                </mat-icon>
+                            </button>
+                        </span>
+                    </div>
+                    <mat-select [panelClass]="'panel-adjust'" [disableOptionCentering]="true"
+                        class="filter-toggle-dropdown" placeholder="ALL" multiple #agentVersion
+                        [value] = "selectedFilterValues?.iotVersionNumber"
+                        (selectionChange)="onFilterChange($event.value, 'iotVersionNumber')">
+                        <ngx-mat-select-search [formControl]="filterSearches?.iotVersionNumber.ctrl"
+                            [clearSearchInput]="false"
+                            [placeholderLabel]="Languages.get('global.searchAgentVersion', 'capitalizeFirst')"
+                            [noEntriesFoundLabel]="Languages.get('global.noMatchFound', 'capitalizeFirst')">
+                        </ngx-mat-select-search>
+                        <div *ngIf="displayFilters['iotVersionNumber']?.length > 0"
+                            class='searchResultList-filterOption clearFilters'><span
+                                (click)="clearSelectedFilters(agentVersion)">{{Languages.get('global.clear', 'capitalizeFirst')}}</span>
+                        </div>
+                        <mat-option *ngFor="let item of displayFilters['iotVersionNumber']" [value]="item"
+                            class='searchResultList-filterOption'>
+                            <span class='searchResultList-filterOption-text'>{{item}}</span>
+                        </mat-option>
+                    </mat-select>
+                </span>
+
+                 <!-- status Header -->
                 <span class="filter-title app-version app-version-column">
                     <div class="filter-sort">
                         <div class="filter-title__text">{{Languages.get('global.agentVersion', 'capitalizeFirst')}}

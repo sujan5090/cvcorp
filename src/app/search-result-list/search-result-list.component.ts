@@ -24,12 +24,12 @@ export class SearchResultListComponent implements OnInit, OnChanges, OnDestroy {
     public customerFilterSearchCtrlSub: Subscription;
 
     public displayFilters = {
-        'company': [],
-        'location': [],
-        'model': [],
-        'revolutionVersion': [],
-        'iotVersionNumber': [],
-        'storeName': []
+        company: [],
+        location: [],
+        model: [],
+        revolutionVersion: [],
+        iotVersionNumber: [],
+        storeName: []
     };
 
     public Languages = Languages;
@@ -48,17 +48,17 @@ export class SearchResultListComponent implements OnInit, OnChanges, OnDestroy {
      * for the possible filter properties worth showing
      */
     public possibleFilterProperties: any = {
-        'tenthmarks': [],
-        'batch': [],
-        'branch': [],
-        'btechMarks': [],
-        'collegeName': [],
-        'email': [],
-        'gender': [],
-        'interMarks': [],
-        'placementReady': [],
-        'status': [],
-        'yearOfPassout': []
+        tenthmarks: [],
+        batch: [],
+        branch: [],
+        btechMarks: [],
+        collegeName: [],
+        email: [],
+        gender: [],
+        interMarks: [],
+        placementReady: [],
+        status: [],
+        yearOfPassout: []
     };
 
     /**
@@ -66,82 +66,76 @@ export class SearchResultListComponent implements OnInit, OnChanges, OnDestroy {
      */
     public appliedFilters: any[] = [
         {
-            name: 'availability',
+            name: 'tenthmarks',
             values: []
         },
         {
-            name: 'alertStatusWithoutDetails',
+            name: 'batch',
             values: []
         },
         {
-            name: 'company',
+            name: 'branch',
             values: []
         },
         {
-            name: 'location',
+            name: 'btechMarks',
             values: []
         },
         {
 
-            name: 'model',
+            name: 'collegeName',
             values: []
         },
         {
-            name: 'revolutionVersion',
+            name: 'email',
             values: []
         },
         {
-            name: 'iotVersionNumber',
+            name: 'gender',
             values: []
         },
         {
-            name: 'storeName',
+            name: 'interMarks',
             values: []
+        },
+        {
+            name: 'placementReady',
+            values: []
+        },
+        {
+            name: 'status',
+            values: []
+        },
+        {
+            name: 'yearOfPassout',
+             values: []
         }
     ];
 
     selectedFilterValues = {
-        'company': [],
-        'location': [],
-        'model': [],
-        'revolutionVersion': [],
-        'iotVersionNumber': [],
-        'storeName': []
+        tenthmarks: [],
+        batch: [],
+        branch: [],
+        btechMarks: [],
+        collegeName: [],
+        email: [],
+        gender: [],
+        interMarks: [],
+        placementReady: [],
+        status: [],
+        yearOfPassout: []
     };
 
-    /**
-     * abbreviation mapping for mobile view
-     */
-    public alertStatusAbbreviationMapping: any = {
-        'Needs Attention': 'NA',
-        'Problem Detected': 'PD',
-        'Degrade': 'D',
-        'Problem Notified': 'PN',
-        'Not Connected': 'NC',
-        'Good (odometer needs service)': 'G (NS)',
-        'Good': 'G'
-    };
 
     public sortModel = {
-        'serialNo': 'asc',
-        'revolutionVersion': 'asc',
-        'iotVersionNumber': 'asc',
-        'company': 'asc',
-        'location': 'asc',
-        'position': 'asc',
-        'storeName': 'asc'
+        serialNo: 'asc',
+        revolutionVersion: 'asc',
+        iotVersionNumber: 'asc',
+        company: 'asc',
+        location: 'asc',
+        position: 'asc',
+        storeName: 'asc'
     };
-
-    public unitData: any = {
-        units: [],
-        totalDocuments: null,
-        offset: null
-    };
-
-    // public alertsToColorMapping: any = this.revolutionAlertsService.alertsToColorMapping;
-
-    // public connectionStatusColorMapping: any = this.revolutionAlertsService.connectionStatusColorMapping;
-
     public baSortAscending = true;  // will leave this property to true, and will change when toggled
 
     public isSelectAll = false;
@@ -173,27 +167,47 @@ export class SearchResultListComponent implements OnInit, OnChanges, OnDestroy {
     public isSuperAdmin: boolean;
 
     private filterSearches = {
-        'company': {
+        tenthmarks: {
             ctrl: new FormControl(),
             subscription: null
         },
-        'location': {
+        batch: {
             ctrl: new FormControl(),
             subscription: null
         },
-        'model': {
+        branch: {
             ctrl: new FormControl(),
             subscription: null
         },
-        'revolutionVersion': {
+        btechMarks: {
             ctrl: new FormControl(),
             subscription: null
         },
-        'iotVersionNumber': {
+        collegeName: {
             ctrl: new FormControl(),
             subscription: null
         },
-        'storeName': {
+        email: {
+            ctrl: new FormControl(),
+            subscription: null
+        },
+        gender: {
+            ctrl: new FormControl(),
+            subscription: null
+        },
+        interMarks: {
+            ctrl: new FormControl(),
+            subscription: null
+        },
+        placementReady: {
+            ctrl: new FormControl(),
+            subscription: null
+        },
+        status: {
+            ctrl: new FormControl(),
+            subscription: null
+        },
+        yearOfPassout: {
             ctrl: new FormControl(),
             subscription: null
         }
@@ -246,7 +260,7 @@ export class SearchResultListComponent implements OnInit, OnChanges, OnDestroy {
 
     ngOnDestroy() {
         Object.keys(this.filterSearches).forEach((key) => {
-            let filterSearch = this.filterSearches[key];
+            const filterSearch = this.filterSearches[key];
             if (filterSearch.subscription) {
                 filterSearch.subscription.unsubscribe();
             }
@@ -286,7 +300,7 @@ export class SearchResultListComponent implements OnInit, OnChanges, OnDestroy {
     applyFilters(): void {
         if (this.hasFilters()) {
             const filters = this.appliedFilters;
-            this.displayData = this.data.units.filter(unit => {
+            this.displayData = this.data.filter(unit => {
                 return filters.reduce((acc, filter) => {
                     if (acc) {
                         if (filter && filter.values && filter.values.length) {
@@ -323,7 +337,7 @@ export class SearchResultListComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     onFilterChange(value, filterName) {
-        let updatedFilter: any = this.appliedFilters.find((filter) => filter.name === filterName);
+        const updatedFilter: any = this.appliedFilters.find((filter) => filter.name === filterName);
         if (value) {
             if (value.length && value[0].text === undefined) {
                 updatedFilter.values = value;
@@ -375,63 +389,58 @@ export class SearchResultListComponent implements OnInit, OnChanges, OnDestroy {
     buildFilters(data: any): void {
         console.log('the data is ', data);
         const reducer = (accum: any, current: any) => {
-            if (!accum['company'].includes(current.company)) {
-                accum['company'].push(current.company);
+            if (!accum.tenthmarks.includes(current.tenthmarks)) {
+                accum.tenthmarks.push(current.tenthmarks);
             }
-
-            let location = current.location;
-
-            if (typeof location === 'string') {
-                location = location;
-            } else {
-                location = Languages.get('global.na', 'upper');
+            if (!accum.batch.includes(current.batch)) {
+                accum.batch.push(current.batch);
             }
-
-            if (!accum['location'].includes(location)) {
-                accum['location'].push(location);
+            if (!accum.branch.includes(current.branch)) {
+                accum.branch.push(current.branch);
             }
-
-            if (!accum['model'].includes(current.model)) {
-                accum['model'].push(current.model);
+            if (!accum.btechMarks.includes(current.btechMarks)) {
+                accum.btechMarks.push(current.btechMarks);
             }
-
-            let appVersion = current.revolutionVersion;
-
-            // if (appVersion && appVersion !== null) {
-            //     appVersion = appVersion.substring(0, 4);
-            // } else {
-            //     appVersion = 'NA';
-            // }
-            let agentVersion = current.iotVersionNumber;
-            if (!accum['revolutionVersion'].includes(appVersion)) {
-                accum['revolutionVersion'].push(appVersion);
+            if (!accum.collegeName.includes(current.collegeName)) {
+                accum.collegeName.push(current.collegeName);
             }
-            if (!accum['iotVersionNumber'].includes(agentVersion)) {
-                accum['iotVersionNumber'].push(agentVersion);
+            if (!accum.email.includes(current.email)) {
+                accum.email.push(current.email);
             }
-            let storeName = current.storeName;
-            if (!accum['storeName'].includes(storeName)) {
-                accum['storeName'].push(storeName);
+            if (!accum.gender.includes(current.gender)) {
+                accum.gender.push(current.gender);
+            }
+            if (!accum.interMarks.includes(current.interMarks)) {
+                accum.interMarks.push(current.interMarks);
+            }
+            if (!accum.placementReady.includes(current.placementReady)) {
+                accum.placementReady.push(current.placementReady);
+            }
+            if (!accum.status.includes(current.status)) {
+                accum.status.push(current.status);
+            }
+            if (!accum.yearOfPassout.includes(current.yearOfPassout)) {
+                accum.yearOfPassout.push(current.yearOfPassout);
             }
 
             return accum;
         };
 
         const starterAccum = {
-            'tenthmarks': [],
-            'batch': [],
-            'branch': [],
-            'btechMarks': [],
-            'collegeName': [],
-            'email': [],
-            'gender': [],
-            'interMarks': [],
-            'placementReady': [],
-            'status': [],
-            'yearOfPassout': []
+            tenthmarks: [],
+            batch: [],
+            branch: [],
+            btechMarks: [],
+            collegeName: [],
+            email: [],
+            gender: [],
+            interMarks: [],
+            placementReady: [],
+            status: [],
+            yearOfPassout: []
         };
 
-        const catcher = data && data.units && data.units.reduce(reducer, starterAccum);
+        const catcher = data &&  data.reduce(reducer, starterAccum);
         this.possibleFilterProperties = catcher;
         Object.keys(this.possibleFilterProperties).forEach((item, index) => {
             if (this.possibleFilterProperties[item].length === 1) {
@@ -458,7 +467,7 @@ export class SearchResultListComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     updateDisplayFilters(colName) {
-        let searchValue = this.filterSearches[colName].ctrl.value.toLowerCase();
+        const searchValue = this.filterSearches[colName].ctrl.value.toLowerCase();
         this.displayFilters[colName] = this.possibleFilterProperties[colName]
             .filter(val => (val.toLowerCase().indexOf(searchValue) !== -1) ? true : false);
     }
